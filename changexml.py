@@ -25,9 +25,8 @@ for xml_file in glob.glob(path + '/*.xml'):
     root = tree.getroot()
     for member in root.findall('object'):
         if member[0].text == 'airplane':
-            print(member[0].text)
             member[0].text = 'Airplane'
-            print(member[0].text)
+            
         width = int(root.find('size')[0].text)
         height = int(root.find('size')[1].text)
         xmn = int(member[5][0].text)
