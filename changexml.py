@@ -4,10 +4,26 @@ import pandas as pd
 import io
 import xml.etree.ElementTree as ET
 import argparse
+import numpy as np
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'    # Suppress TensorFlow logging (1)
+import tensorflow.compat.v1 as tf
+from PIL import Image
+from object_detection.utils import dataset_util, label_map_util
+from collections import namedtuple
+parser = argparse.ArgumentParser(
+    description="Sample TensorFlow XML-to-TFRecord converter")
+parser.add_argument("-x",
+                    "--xml_dir",
+                    help="Path to the folder where the input .xml files are stored.",
+                    type=str)
+
+args = parser.parse_args()
+path = os.path.join(args.image_dir)
 
 
-path = 'Tensorflow/workspace/images/train'
-for xml_file in glob.glob(path + '/*.xml'):
+path1 = os.path.join(path, 'train')
+for xml_file in glob.glob(path1 + '/*.xml'):
     tree = ET.parse(xml_file)
     root = tree.getroot()
     for member in root.findall('object'):
@@ -47,7 +63,7 @@ for xml_file in glob.glob(path + '/*.xml'):
             member[5][3].text = str(ymn)
     tree.write(xml_file)
 
-path = 'Tensorflow/workspace/images/test'
+path2 = os.path.join(path, 'test')
 for xml_file in glob.glob(path + '/*.xml'):
     tree = ET.parse(xml_file)
     root = tree.getroot()
